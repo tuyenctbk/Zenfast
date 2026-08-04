@@ -34,10 +34,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,7 +66,8 @@ fun OnboardingScreen(
     onFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var currentPage by remember { mutableIntStateOf(0) }
+    val pagerState = rememberPagerState(pageCount = { 3 })
+    val coroutineScope = rememberCoroutineScope()
 
     val pages = listOf(
         OnboardingPageData(
@@ -104,8 +105,6 @@ fun OnboardingScreen(
         )
     )
 
-    val currentPageData = pages[currentPage]
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -119,7 +118,6 @@ fun OnboardingScreen(
                 .fillMaxSize()
                 .widthIn(max = 600.dp)
                 .padding(24.dp)
-                .verticalScroll(rememberScrollState())
         ) {
             // Skip button
             Row(
@@ -138,121 +136,136 @@ fun OnboardingScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-            // Illustrated Image Card
-            Card(
+            // Horizontal Pager for swipe left/right
+            HorizontalPager(
+                state = pagerState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
-                shape = RoundedCornerShape(24.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Image(
-                        painter = painterResource(id = currentPageData.imageResId),
-                        contentDescription = "Onboarding Image",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = if (currentPage == 2) ContentScale.Fit else ContentScale.Crop
-                    )
-                    
-                    // Small ambient decorative gradient inside the card
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                androidx.compose.ui.graphics.Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.4f))
-                                )
-                            )
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Header Section with Custom Icon and Title
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .background(EmeraldPrimary.copy(alpha = 0.15f))
-                ) {
-                    Icon(
-                        imageVector = currentPageData.accentIcon,
-                        contentDescription = null,
-                        tint = EmeraldPrimary,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = currentPageData.title,
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = (-0.5).sp
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Core description text
-            Text(
-                text = currentPageData.description,
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                lineHeight = 24.sp,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Adaptive list of key benefits
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                ),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
+                    .weight(1f)
+            ) { pageIndex ->
+                val pageData = pages[pageIndex]
                 Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                 ) {
-                    currentPageData.bulletPoints.forEach { point ->
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
+                    // Illustrated Image Card
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        shape = RoundedCornerShape(24.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Image(
+                                painter = painterResource(id = pageData.imageResId),
+                                contentDescription = "Onboarding Image",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = if (pageIndex == 2) ContentScale.Fit else ContentScale.Crop
+                            )
+                            
+                            // Small ambient decorative gradient inside the card
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        androidx.compose.ui.graphics.Brush.verticalGradient(
+                                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.4f))
+                                        )
+                                    )
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Header Section with Custom Icon and Title
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(EmeraldPrimary.copy(alpha = 0.15f))
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Check,
+                                imageVector = pageData.accentIcon,
                                 contentDescription = null,
                                 tint = EmeraldPrimary,
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(24.dp)
                             )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = point,
-                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
+                        }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = pageData.title,
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = (-0.5).sp
+                            ),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Core description text
+                    Text(
+                        text = pageData.description,
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        lineHeight = 24.sp,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Adaptive list of key benefits
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            pageData.bulletPoints.forEach { point ->
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Check,
+                                        contentDescription = null,
+                                        tint = EmeraldPrimary,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        text = point,
+                                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Page Indicator Dots and Next Action Button Row
             Row(
@@ -267,10 +280,10 @@ fun OnboardingScreen(
                     pages.indices.forEach { idx ->
                         Box(
                             modifier = Modifier
-                                .size(width = if (currentPage == idx) 20.dp else 8.dp, height = 8.dp)
+                                .size(width = if (pagerState.currentPage == idx) 20.dp else 8.dp, height = 8.dp)
                                 .clip(CircleShape)
                                 .background(
-                                    if (currentPage == idx) EmeraldPrimary else MaterialTheme.colorScheme.outlineVariant
+                                    if (pagerState.currentPage == idx) EmeraldPrimary else MaterialTheme.colorScheme.outlineVariant
                                 )
                         )
                     }
@@ -279,8 +292,10 @@ fun OnboardingScreen(
                 // Primary Button
                 Button(
                     onClick = {
-                        if (currentPage < pages.lastIndex) {
-                            currentPage++
+                        if (pagerState.currentPage < pages.lastIndex) {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                            }
                         } else {
                             onFinished()
                         }
@@ -300,7 +315,7 @@ fun OnboardingScreen(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = if (currentPage == pages.lastIndex) stringResource(id = R.string.get_started) else stringResource(id = R.string.next),
+                            text = if (pagerState.currentPage == pages.lastIndex) stringResource(id = R.string.get_started) else stringResource(id = R.string.next),
                             style = MaterialTheme.typography.labelLarge.copy(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
