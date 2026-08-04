@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="400dp"
+    android:height="160dp"
+    android:viewportWidth="400"
+    android:viewportHeight="160">
+
+    <!-- Background Card Canvas -->
+    <path android:pathData="M0,0h400v160h-400z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="400"
+                android:endY="160"
+                android:type="linear">
+                <item android:color="#0D2B22" android:offset="0.0" />
+                <item android:color="#0A1F1A" android:offset="0.6" />
+                <item android:color="#142834" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Glowing Sunrise Arc -->
+    <path
+        android:pathData="M 320,-20 A 110,110 0 1,1 100,100"
+        android:strokeWidth="12"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="100"
+                android:startY="0"
+                android:endX="320"
+                android:endY="100"
+                android:type="linear">
+                <item android:color="#10B981" android:offset="0.0" />
+                <item android:color="#F59E0B" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Subtle Mountain/Hills Vector Silhouette -->
+    <path
+        android:pathData="M 0,160 L 0,110 Q 80,80 160,120 T 320,100 T 400,130 L 400,160 Z"
+        android:fillColor="#1A0D382A" />
+    <path
+        android:pathData="M 0,160 L 0,130 Q 100,105 200,140 T 400,120 L 400,160 Z"
+        android:fillColor="#35064E3B" />
+
+    <!-- Sparkle Stars -->
+    <path
+        android:pathData="M 80,30 L 82,35 L 87,37 L 82,39 L 80,44 L 78,39 L 73,37 L 78,35 Z"
+        android:fillColor="#FCD34D" />
+    <path
+        android:pathData="M 340,40 L 341.5,43.5 L 345,45 L 341.5,46.5 L 340,50 L 338.5,46.5 L 335,45 L 338.5,43.5 Z"
+        android:fillColor="#6EE7B7" />
+</vector>

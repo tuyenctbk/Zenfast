@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="360dp"
+    android:height="200dp"
+    android:viewportWidth="360"
+    android:viewportHeight="200">
+
+    <!-- Background Canvas -->
+    <path android:pathData="M0,0h360v200h-360z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="360"
+                android:endY="200"
+                android:type="linear">
+                <item android:color="#0F1715" android:offset="0.0" />
+                <item android:color="#132E27" android:offset="0.5" />
+                <item android:color="#06181B" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Glowing Backdrop Radial Circle -->
+    <path android:pathData="M 180,100 m -120,0 a 120,120 0 1,0 240,0 a 120,120 0 1,0 -240,0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:centerX="180"
+                android:centerY="100"
+                android:gradientRadius="120"
+                android:type="radial">
+                <item android:color="#2510B981" android:offset="0.0" />
+                <item android:color="#000F1715" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Wave Decorative Paths -->
+    <path
+        android:pathData="M 0,160 C 90,120 180,180 360,130 L 360,200 L 0,200 Z"
+        android:fillColor="#1526312B" />
+    <path
+        android:pathData="M 0,175 C 120,150 240,190 360,160 L 360,200 L 0,200 Z"
+        android:fillColor="#25059669" />
+
+    <!-- Center Ring & Leaf Artwork -->
+    <path
+        android:pathData="M 180,35 A 60,60 0 1,1 120,65"
+        android:strokeWidth="8"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="120"
+                android:startY="35"
+                android:endX="240"
+                android:endY="155"
+                android:type="linear">
+                <item android:color="#34D399" android:offset="0.0" />
+                <item android:color="#06B6D4" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Accent Arc -->
+    <path
+        android:pathData="M 180,35 A 60,60 0 0,1 240,95"
+        android:strokeWidth="8"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="180"
+                android:startY="35"
+                android:endX="240"
+                android:endY="95"
+                android:type="linear">
+                <item android:color="#F59E0B" android:offset="0.0" />
+                <item android:color="#10B981" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Inner Zen Leaf -->
+    <path
+        android:pathData="M 180,60 C 165,80 165,105 180,125 C 195,105 195,80 180,60 Z"
+        android:fillColor="#10B981" />
+</vector>
