@@ -28,8 +28,6 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.SettingsSuggest
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -171,30 +169,6 @@ fun ZenFastApp(viewModel: ZenFastViewModel) {
                                 },
                                 contentDescription = "Theme Mode",
                                 tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-
-                        // Share App Button
-                        IconButton(
-                            onClick = { viewModel.triggerSharePrompt(force = true) },
-                            modifier = Modifier.testTag("share_app_top_button")
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = "Share App",
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-
-                        // Rate App Button
-                        IconButton(
-                            onClick = { viewModel.triggerRatingPrompt(force = true) },
-                            modifier = Modifier.testTag("rate_app_top_button")
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Star,
-                                contentDescription = "Rate App",
-                                tint = androidx.compose.ui.graphics.Color(0xFFF59E0B)
                             )
                         }
                     }

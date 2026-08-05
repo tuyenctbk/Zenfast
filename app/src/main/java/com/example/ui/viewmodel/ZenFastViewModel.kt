@@ -50,8 +50,28 @@ class ZenFastViewModel(application: Application) : AndroidViewModel(application)
     private val _showShareDialog = MutableStateFlow(false)
     val showShareDialog: StateFlow<Boolean> = _showShareDialog.asStateFlow()
 
-    private var hasPromptedRating = false
-    private var hasPromptedShare = false
+    private var hasRatedApp: Boolean
+        get() = prefs.getBoolean("has_rated_app", false)
+        set(value) = prefs.edit().putBoolean("has_rated_app", value).apply()
+
+    private var hasSharedApp: Boolean
+        get() = prefs.getBoolean("has_shared_app", false)
+        set(value) = prefs.edit().putBoolean("has_shared_app", value).apply()
+
+    private var lastPromptTimeMs: Long
+        get() = prefs.getLong("last_prompt_timestamp_ms", 0L)
+        set(value) = prefs.edit().putLong("last_prompt_timestamp_ms", value).apply()
+
+    private val PROMPT_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000L // 3 days cooldown
+
+    private fun isEligibleForPrompt(): Boolean {
+        val now = System.currentTimeMillis()
+        return (now - lastPromptTimeMs) > PROMPT_COOLDOWN_MS
+    }
+
+    private fun recordPromptShown() {
+        lastPromptTimeMs = System.currentTimeMillis()
+    }
 
     private val _currentTimeMillis = MutableStateFlow(System.currentTimeMillis())
     val currentTimeMillis: StateFlow<Long> = _currentTimeMillis.asStateFlow()
@@ -180,49 +200,60 @@ class ZenFastViewModel(application: Application) : AndroidViewModel(application)
             )
             ZenFastFirebaseManager.logFastCompleted(elapsedHours, isTargetReached)
 
-            // Smart Auto-Show suggestion logic
-            val totalCompleted = completedSessions.value.size + 1
-            if (!hasPromptedRating && totalCompleted >= 1) {
-                _showRatingDialog.value = true
-                hasPromptedRating = true
-            } else if (!hasPromptedShare && totalCompleted >= 2) {
-                _showShareDialog.value = true
-                hasPromptedShare = true
+            // Smart Moment-of-Achievement Trigger:
+            // Prompt when user successfully completes a fast meeting/exceeding their target goal!
+            if (isTargetReached) {
+                if (!hasRatedApp && isEligibleForPrompt()) {
+                    _showRatingDialog.value = true
+                    recordPromptShown()
+                } else if (hasRatedApp && !hasSharedApp && isEligibleForPrompt()) {
+                    _showShareDialog.value = true
+                    recordPromptShown()
+                }
             }
         }
     }
 
     fun triggerRatingPrompt(force: Boolean = false) {
-        if (force || !_showRatingDialog.value) {
+        if (force || (!hasRatedApp && isEligibleForPrompt())) {
             _showRatingDialog.value = true
+            recordPromptShown()
         }
     }
 
     fun dismissRatingPrompt() {
         _showRatingDialog.value = false
+        recordPromptShown()
     }
 
     fun submitRating(stars: Int, feedback: String? = null) {
         ZenFastFirebaseManager.logAppRated(stars, feedback)
         _showRatingDialog.value = false
-        // If 4 or 5 stars, smartly prompt to share as well!
-        if (stars >= 4 && !hasPromptedShare) {
-            _showShareDialog.value = true
-            hasPromptedShare = true
+
+        if (stars >= 4) {
+            hasRatedApp = true
+            // Peak satisfaction moment: high rating -> prompt share!
+            if (!hasSharedApp) {
+                _showShareDialog.value = true
+                recordPromptShown()
+            }
         }
     }
 
     fun triggerSharePrompt(force: Boolean = false) {
-        if (force || !_showShareDialog.value) {
+        if (force || (!hasSharedApp && isEligibleForPrompt())) {
             _showShareDialog.value = true
+            recordPromptShown()
         }
     }
 
     fun dismissSharePrompt() {
         _showShareDialog.value = false
+        recordPromptShown()
     }
 
     fun onShareCompleted() {
+        hasSharedApp = true
         ZenFastFirebaseManager.logAppShared()
         _showShareDialog.value = false
     }
@@ -235,9 +266,22 @@ class ZenFastViewModel(application: Application) : AndroidViewModel(application)
 
     fun logWater(amountMl: Int = 250) {
         viewModelScope.launch {
+            val prevTotal = todayTotalWaterMl.value
             repository.logWater(amountMl)
-            val newTotal = todayTotalWaterMl.value + amountMl
+            val newTotal = prevTotal + amountMl
             ZenFastFirebaseManager.logWaterLogged(amountMl, newTotal)
+
+            // Smart Hydration Achievement Trigger:
+            // When user hits 100% of their daily hydration goal!
+            if (prevTotal < dailyWaterGoalMl.value && newTotal >= dailyWaterGoalMl.value) {
+                if (!hasRatedApp && isEligibleForPrompt()) {
+                    _showRatingDialog.value = true
+                    recordPromptShown()
+                } else if (hasRatedApp && !hasSharedApp && isEligibleForPrompt()) {
+                    _showShareDialog.value = true
+                    recordPromptShown()
+                }
+            }
         }
     }
 
