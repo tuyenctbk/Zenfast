@@ -10,13 +10,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.SoupKitchen
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -51,6 +56,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.R
 
 @Composable
@@ -62,6 +68,7 @@ fun DashboardScreen(
     selectedTargetHours: Float,
     todayWaterMl: Int,
     dailyWaterGoalMl: Int,
+    onNavigateToKitchen: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var showEditTimeDialog by remember { mutableStateOf(false) }
@@ -153,11 +160,11 @@ fun DashboardScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Stop,
-                        contentDescription = "End Fast",
+                        contentDescription = stringResource(id = R.string.end_fast),
                         modifier = Modifier.padding(end = 6.dp)
                     )
                     Text(
-                        text = "End Fast",
+                        text = stringResource(id = R.string.end_fast),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 }
@@ -173,11 +180,11 @@ fun DashboardScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.EditCalendar,
-                        contentDescription = "Edit Start Time",
+                        contentDescription = stringResource(id = R.string.edit_start_time),
                         modifier = Modifier.padding(end = 6.dp)
                     )
                     Text(
-                        text = "Edit Start",
+                        text = stringResource(id = R.string.edit_start),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 }
@@ -197,18 +204,83 @@ fun DashboardScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.PlayArrow,
-                        contentDescription = "Start Fasting",
+                        contentDescription = stringResource(id = R.string.start_fast),
                         modifier = Modifier.padding(end = 8.dp)
                     )
                     Text(
-                        text = "Start ${targetDurationHours.toInt()}:${(targetDurationHours % 1 * 60).toInt()} Fast",
+                        text = stringResource(
+                            id = R.string.start_fast_formatted,
+                            targetDurationHours.toInt(),
+                            (targetDurationHours % 1 * 60).toInt()
+                        ),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(18.dp))
+
+        // OpenKitchen Break-Fast & Glycemic Scanner Companion Card
+        Card(
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .clickable { onNavigateToKitchen() }
+                .testTag("dashboard_open_kitchen_card")
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(EmeraldPrimary.copy(alpha = 0.15f))
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.SoupKitchen,
+                        contentDescription = null,
+                        tint = EmeraldPrimary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(14.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(id = R.string.openkitchen_companion_title),
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = if (isFastingActive)
+                            stringResource(id = R.string.openkitchen_companion_fasting_desc)
+                        else
+                            stringResource(id = R.string.openkitchen_companion_ready_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = "Open Kitchen",
+                    tint = EmeraldPrimary,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Biological Stage Visualizer Card
         BiologicalStageCard(
@@ -247,6 +319,7 @@ fun DashboardScreen(
             onConfirmEndFast = { energyLevel, weightKg, notes ->
                 viewModel.endFast(energyLevel, weightKg, notes)
             },
+            onNavigateToKitchen = onNavigateToKitchen,
             onDismiss = { showEndFastDialog = false }
         )
     }

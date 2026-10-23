@@ -40,6 +40,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.R
 import com.example.data.model.FastingSession
 import com.example.ui.theme.AmberSecondary
 import com.example.ui.theme.EmeraldPrimary
@@ -75,7 +77,7 @@ fun HistoryScreen(
     ) {
         // Summary Stats Grid
         Text(
-            text = "FASTING PERFORMANCE & INSIGHTS",
+            text = stringResource(id = R.string.history_perf_header),
             style = MaterialTheme.typography.labelSmall.copy(
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.2.sp
@@ -109,7 +111,7 @@ fun HistoryScreen(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Completed Fasts",
+                        text = stringResource(id = R.string.completed_fasts_label),
                         style = MaterialTheme.typography.labelSmall,
                         color = TextSecondary
                     )
@@ -136,7 +138,7 @@ fun HistoryScreen(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Total Fasted",
+                        text = stringResource(id = R.string.total_fasted_label),
                         style = MaterialTheme.typography.labelSmall,
                         color = TextSecondary
                     )
@@ -163,7 +165,7 @@ fun HistoryScreen(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Avg Duration",
+                        text = stringResource(id = R.string.avg_duration_label),
                         style = MaterialTheme.typography.labelSmall,
                         color = TextSecondary
                     )
@@ -175,7 +177,7 @@ fun HistoryScreen(
 
         // History Log Section
         Text(
-            text = "FASTING LOG HISTORY",
+            text = stringResource(id = R.string.history_log_header),
             style = MaterialTheme.typography.labelSmall.copy(
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.2.sp
@@ -201,7 +203,7 @@ fun HistoryScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "No completed fasts yet. Start your first fast today!",
+                        text = stringResource(id = R.string.empty_history),
                         style = MaterialTheme.typography.bodyMedium,
                         color = TextMuted
                     )
@@ -247,7 +249,7 @@ fun HistoryScreen(
 
                                 Column {
                                     Text(
-                                        text = "${String.format("%.1f", actualHours)} Hours Fasted",
+                                        text = stringResource(id = R.string.hours_fasted_format, actualHours),
                                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                         color = MaterialTheme.colorScheme.onSurface
                                     )

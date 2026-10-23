@@ -47,6 +47,7 @@ fun EndFastDialog(
     elapsedHours: Float,
     targetHours: Float,
     onConfirmEndFast: (energyLevel: String?, weightKg: Float?, notes: String?) -> Unit,
+    onNavigateToKitchen: (() -> Unit)? = null,
     onDismiss: () -> Unit
 ) {
     var selectedEnergy by remember { mutableStateOf<String?>("NORMAL") }
@@ -154,6 +155,34 @@ fun EndFastDialog(
                     placeholder = { Text("e.g. Felt great during morning walk") },
                     modifier = Modifier.fillMaxWidth()
                 )
+
+                if (onNavigateToKitchen != null) {
+                    Spacer(modifier = Modifier.height(14.dp))
+                    androidx.compose.material3.OutlinedButton(
+                        onClick = {
+                            val weightVal = weightInput.toFloatOrNull()
+                            onConfirmEndFast(selectedEnergy, weightVal, notesInput.ifBlank { null })
+                            onDismiss()
+                            onNavigateToKitchen()
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("end_fast_open_kitchen_btn")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            tint = EmeraldPrimary,
+                            modifier = Modifier.padding(end = 6.dp)
+                        )
+                        Text(
+                            text = "Save & Cook in OpenKitchen",
+                            color = EmeraldPrimary,
+                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                        )
+                    }
+                }
             }
         },
         confirmButton = {

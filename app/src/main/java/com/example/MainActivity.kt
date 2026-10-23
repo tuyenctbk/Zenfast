@@ -2,6 +2,7 @@ package com.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -28,6 +29,7 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.SettingsSuggest
+import androidx.compose.material.icons.filled.SoupKitchen
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,6 +66,8 @@ import com.example.ui.components.ThemeSelectorDialog
 import com.example.ui.screens.DashboardScreen
 import com.example.ui.screens.HistoryScreen
 import com.example.ui.screens.HydrationScreen
+import com.example.ui.screens.OpenKitchenScreen
+import com.example.ui.screens.RecipeCookModeScreen
 import com.example.ui.screens.StagesDetailScreen
 import com.example.ui.screens.OnboardingScreen
 import com.example.ui.theme.EmeraldPrimary
@@ -94,6 +98,7 @@ enum class NavigationTab(
     val testTag: String
 ) {
     TIMER(R.string.nav_timer, Icons.Default.Timer, "nav_timer"),
+    KITCHEN(R.string.nav_kitchen, Icons.Default.SoupKitchen, "nav_kitchen"),
     STAGES(R.string.nav_stages, Icons.Default.LocalFireDepartment, "nav_stages"),
     WATER(R.string.nav_water, Icons.Default.WaterDrop, "nav_water"),
     HISTORY(R.string.nav_history, Icons.Default.Analytics, "nav_history")
@@ -125,6 +130,45 @@ fun ZenFastApp(viewModel: ZenFastViewModel) {
     val currentThemeMode by viewModel.themeMode.collectAsStateWithLifecycle()
     val showRatingDialog by viewModel.showRatingDialog.collectAsStateWithLifecycle()
     val showShareDialog by viewModel.showShareDialog.collectAsStateWithLifecycle()
+
+    // OpenKitchen & Cook Mode States
+    val recipes by viewModel.recipes.collectAsStateWithLifecycle()
+    val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
+    val isLoadingRecipes by viewModel.isLoadingRecipes.collectAsStateWithLifecycle()
+    val activeCookingRecipe by viewModel.activeCookingRecipe.collectAsStateWithLifecycle()
+    val currentCookStepIndex by viewModel.currentCookStepIndex.collectAsStateWithLifecycle()
+    val stepTimerSecondsRemaining by viewModel.stepTimerSecondsRemaining.collectAsStateWithLifecycle()
+    val isStepTimerRunning by viewModel.isStepTimerRunning.collectAsStateWithLifecycle()
+    val checkedIngredients by viewModel.checkedIngredients.collectAsStateWithLifecycle()
+    val barcodeInput by viewModel.barcodeInput.collectAsStateWithLifecycle()
+    val isAnalyzingBarcode by viewModel.isAnalyzingBarcode.collectAsStateWithLifecycle()
+    val glycemicAnalysis by viewModel.glycemicAnalysis.collectAsStateWithLifecycle()
+    val barcodeAnalysisError by viewModel.barcodeAnalysisError.collectAsStateWithLifecycle()
+    val recentScans by viewModel.recentScans.collectAsStateWithLifecycle()
+
+    // If Cook Mode is active, display Recipe Cook Mode full-screen
+    if (activeCookingRecipe != null) {
+        RecipeCookModeScreen(
+            recipe = activeCookingRecipe!!,
+            currentStepIndex = currentCookStepIndex,
+            timerSecondsRemaining = stepTimerSecondsRemaining,
+            isTimerRunning = isStepTimerRunning,
+            checkedIngredients = checkedIngredients,
+            onSetStep = { viewModel.setCookStep(it) },
+            onNextStep = { viewModel.nextCookStep() },
+            onPreviousStep = { viewModel.previousCookStep() },
+            onToggleTimer = { viewModel.toggleStepTimer() },
+            onResetTimer = { viewModel.resetStepTimer() },
+            onToggleIngredient = { viewModel.toggleIngredientChecked(it) },
+            onExitCookMode = { viewModel.exitCookMode() },
+            onFinishAndEndFast = { viewModel.finishCookModeAndEndFast() }
+        )
+        return
+    }
+
+    if (selectedTab != 0) {
+        BackHandler { selectedTab = 0 }
+    }
 
     Scaffold(
         topBar = {
@@ -236,20 +280,36 @@ fun ZenFastApp(viewModel: ZenFastViewModel) {
                         showRemainingTime = showRemainingTime,
                         selectedTargetHours = selectedTargetHours,
                         todayWaterMl = todayTotalWaterMl,
-                        dailyWaterGoalMl = dailyWaterGoalMl
+                        dailyWaterGoalMl = dailyWaterGoalMl,
+                        onNavigateToKitchen = { selectedTab = 1 }
                     )
-                    1 -> StagesDetailScreen(
+                    1 -> OpenKitchenScreen(
+                        recipes = recipes,
+                        selectedCategory = selectedCategory,
+                        isLoadingRecipes = isLoadingRecipes,
+                        barcodeInput = barcodeInput,
+                        isAnalyzingBarcode = isAnalyzingBarcode,
+                        glycemicAnalysis = glycemicAnalysis,
+                        barcodeAnalysisError = barcodeAnalysisError,
+                        recentScans = recentScans,
+                        onSelectCategory = { viewModel.loadRecipes(it) },
+                        onStartCookMode = { viewModel.startCookMode(it) },
+                        onBarcodeInputChanged = { viewModel.onBarcodeInputChanged(it) },
+                        onAnalyzeBarcode = { viewModel.analyzeBarcode(it) },
+                        onClearBarcodeAnalysis = { viewModel.clearBarcodeAnalysis() }
+                    )
+                    2 -> StagesDetailScreen(
                         activeSession = activeSession,
                         currentTimeMs = currentTimeMs
                     )
-                    2 -> HydrationScreen(
+                    3 -> HydrationScreen(
                         todayTotalWaterMl = todayTotalWaterMl,
                         dailyWaterGoalMl = dailyWaterGoalMl,
                         waterLogs = todayWaterLogs,
                         onAddWater = { amount -> viewModel.logWater(amount) },
                         onClearWater = { viewModel.clearTodayWater() }
                     )
-                    3 -> HistoryScreen(
+                    4 -> HistoryScreen(
                         completedSessions = completedSessions,
                         onDeleteSession = { id -> viewModel.deleteSession(id) }
                     )

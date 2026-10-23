@@ -85,6 +85,50 @@ class ZenFastViewModel(application: Application) : AndroidViewModel(application)
     private val _dailyWaterGoalMl = MutableStateFlow(2000)
     val dailyWaterGoalMl: StateFlow<Int> = _dailyWaterGoalMl.asStateFlow()
 
+    private val kitchenRepository = com.example.data.repository.KitchenRepository()
+
+    // Kitchen & Recipes State
+    private val _selectedCategory = MutableStateFlow(com.example.data.model.BreakFastCategory.ALL)
+    val selectedCategory: StateFlow<com.example.data.model.BreakFastCategory> = _selectedCategory.asStateFlow()
+
+    private val _recipes = MutableStateFlow<List<com.example.data.model.BreakFastRecipe>>(emptyList())
+    val recipes: StateFlow<List<com.example.data.model.BreakFastRecipe>> = _recipes.asStateFlow()
+
+    private val _isLoadingRecipes = MutableStateFlow(false)
+    val isLoadingRecipes: StateFlow<Boolean> = _isLoadingRecipes.asStateFlow()
+
+    // Active Cook Mode State
+    private val _activeCookingRecipe = MutableStateFlow<com.example.data.model.BreakFastRecipe?>(null)
+    val activeCookingRecipe: StateFlow<com.example.data.model.BreakFastRecipe?> = _activeCookingRecipe.asStateFlow()
+
+    private val _currentCookStepIndex = MutableStateFlow(0)
+    val currentCookStepIndex: StateFlow<Int> = _currentCookStepIndex.asStateFlow()
+
+    private val _stepTimerSecondsRemaining = MutableStateFlow(0)
+    val stepTimerSecondsRemaining: StateFlow<Int> = _stepTimerSecondsRemaining.asStateFlow()
+
+    private val _isStepTimerRunning = MutableStateFlow(false)
+    val isStepTimerRunning: StateFlow<Boolean> = _isStepTimerRunning.asStateFlow()
+
+    private val _checkedIngredients = MutableStateFlow<Set<String>>(emptySet())
+    val checkedIngredients: StateFlow<Set<String>> = _checkedIngredients.asStateFlow()
+
+    // Glycemic & Barcode Scanner State
+    private val _barcodeInput = MutableStateFlow("")
+    val barcodeInput: StateFlow<String> = _barcodeInput.asStateFlow()
+
+    private val _isAnalyzingBarcode = MutableStateFlow(false)
+    val isAnalyzingBarcode: StateFlow<Boolean> = _isAnalyzingBarcode.asStateFlow()
+
+    private val _glycemicAnalysis = MutableStateFlow<com.example.data.model.GlycemicAnalysis?>(null)
+    val glycemicAnalysis: StateFlow<com.example.data.model.GlycemicAnalysis?> = _glycemicAnalysis.asStateFlow()
+
+    private val _barcodeAnalysisError = MutableStateFlow<String?>(null)
+    val barcodeAnalysisError: StateFlow<String?> = _barcodeAnalysisError.asStateFlow()
+
+    private val _recentScans = MutableStateFlow<List<com.example.data.model.GlycemicAnalysis>>(emptyList())
+    val recentScans: StateFlow<List<com.example.data.model.GlycemicAnalysis>> = _recentScans.asStateFlow()
+
     init {
         ZenFastFirebaseManager.initialize(application)
 
@@ -117,10 +161,24 @@ class ZenFastViewModel(application: Application) : AndroidViewModel(application)
             initialValue = 0
         )
 
-        // Ticker loop for timer updates every second
+        // Load initial break-fast recipes
+        loadRecipes(com.example.data.model.BreakFastCategory.ALL)
+
+        // Ticker loop for timer updates every second & cook timer countdown
         viewModelScope.launch {
             while (true) {
                 _currentTimeMillis.value = System.currentTimeMillis()
+
+                if (_isStepTimerRunning.value) {
+                    val remaining = _stepTimerSecondsRemaining.value
+                    if (remaining > 1) {
+                        _stepTimerSecondsRemaining.value = remaining - 1
+                    } else if (remaining == 1) {
+                        _stepTimerSecondsRemaining.value = 0
+                        _isStepTimerRunning.value = false
+                    }
+                }
+
                 delay(1000)
             }
         }
@@ -312,4 +370,127 @@ class ZenFastViewModel(application: Application) : AndroidViewModel(application)
             } else 0.0
         }.toFloat()
     }
+
+    // --- OPENKITCHEN & COOK MODE METHODS ---
+
+    fun loadRecipes(category: com.example.data.model.BreakFastCategory) {
+        _selectedCategory.value = category
+        viewModelScope.launch {
+            _isLoadingRecipes.value = true
+            try {
+                val list = kitchenRepository.getBreakFastRecipes(category)
+                _recipes.value = list
+            } catch (e: Exception) {
+                _recipes.value = emptyList()
+            } finally {
+                _isLoadingRecipes.value = false
+            }
+        }
+    }
+
+    fun startCookMode(recipe: com.example.data.model.BreakFastRecipe) {
+        _activeCookingRecipe.value = recipe
+        _currentCookStepIndex.value = 0
+        _checkedIngredients.value = emptySet()
+        val firstStepDuration = recipe.steps.firstOrNull()?.durationMinutes ?: 5
+        _stepTimerSecondsRemaining.value = firstStepDuration * 60
+        _isStepTimerRunning.value = false
+    }
+
+    fun exitCookMode() {
+        _activeCookingRecipe.value = null
+        _isStepTimerRunning.value = false
+        _stepTimerSecondsRemaining.value = 0
+    }
+
+    fun setCookStep(index: Int) {
+        val recipe = _activeCookingRecipe.value ?: return
+        if (index in recipe.steps.indices) {
+            _currentCookStepIndex.value = index
+            val duration = recipe.steps[index].durationMinutes
+            _stepTimerSecondsRemaining.value = duration * 60
+            _isStepTimerRunning.value = false
+        }
+    }
+
+    fun nextCookStep() {
+        val recipe = _activeCookingRecipe.value ?: return
+        val next = _currentCookStepIndex.value + 1
+        if (next < recipe.steps.size) {
+            setCookStep(next)
+        }
+    }
+
+    fun previousCookStep() {
+        val prev = _currentCookStepIndex.value - 1
+        if (prev >= 0) {
+            setCookStep(prev)
+        }
+    }
+
+    fun toggleStepTimer() {
+        _isStepTimerRunning.value = !_isStepTimerRunning.value
+    }
+
+    fun resetStepTimer() {
+        _isStepTimerRunning.value = false
+        val recipe = _activeCookingRecipe.value ?: return
+        val currentStep = recipe.steps.getOrNull(_currentCookStepIndex.value)
+        val duration = currentStep?.durationMinutes ?: 5
+        _stepTimerSecondsRemaining.value = duration * 60
+    }
+
+    fun toggleIngredientChecked(name: String) {
+        val current = _checkedIngredients.value.toMutableSet()
+        if (current.contains(name)) {
+            current.remove(name)
+        } else {
+            current.add(name)
+        }
+        _checkedIngredients.value = current
+    }
+
+    fun finishCookModeAndEndFast() {
+        val recipe = _activeCookingRecipe.value
+        val note = if (recipe != null) "Broke fast with OpenKitchen: ${recipe.title}" else "Broke fast with mindful meal"
+        endFast(energyLevel = "HIGH", weightKg = null, notes = note)
+        exitCookMode()
+    }
+
+    // --- GLYCEMIC & BARCODE SCANNER METHODS ---
+
+    fun onBarcodeInputChanged(code: String) {
+        _barcodeInput.value = code
+        _barcodeAnalysisError.value = null
+    }
+
+    fun analyzeBarcode(code: String = _barcodeInput.value) {
+        if (code.isBlank()) {
+            _barcodeAnalysisError.value = "Please enter or scan a barcode number."
+            return
+        }
+
+        viewModelScope.launch {
+            _isAnalyzingBarcode.value = true
+            _barcodeAnalysisError.value = null
+            _barcodeInput.value = code
+
+            val result = kitchenRepository.analyzeBarcode(code)
+            result.onSuccess { analysis ->
+                _glycemicAnalysis.value = analysis
+                // Prepend to recent scans avoiding duplicates
+                val updated = (_recentScans.value.filter { it.barcode != analysis.barcode } + analysis).take(6)
+                _recentScans.value = listOf(analysis) + updated.filter { it.barcode != analysis.barcode }
+            }.onFailure { err ->
+                _barcodeAnalysisError.value = err.message ?: "Food item not found. Try one of the quick samples below."
+            }
+            _isAnalyzingBarcode.value = false
+        }
+    }
+
+    fun clearBarcodeAnalysis() {
+        _glycemicAnalysis.value = null
+        _barcodeAnalysisError.value = null
+    }
 }
+

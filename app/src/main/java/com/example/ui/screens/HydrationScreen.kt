@@ -40,6 +40,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.R
 import com.example.data.model.WaterLog
 import com.example.ui.theme.CyanWater
 import com.example.ui.theme.TextMuted
@@ -110,7 +112,7 @@ fun HydrationScreen(
                 )
 
                 Text(
-                    text = "Daily Goal: $dailyWaterGoalMl ml (${(progress * 100).toInt()}%)",
+                    text = stringResource(id = R.string.daily_goal_progress, dailyWaterGoalMl, (progress * 100).toInt()),
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextSecondary
                 )
@@ -176,7 +178,7 @@ fun HydrationScreen(
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
                 Text(
-                    text = "💡 Fasting & Electrolytes Science",
+                    text = stringResource(id = R.string.hydration_science_title),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -184,7 +186,7 @@ fun HydrationScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "When fasting, insulin levels drop, causing your kidneys to excrete excess water and sodium. Staying hydrated prevents headaches, fatigue, and hunger pangs. Tip: Add a pinch of unrefined sea salt to water during extended fasts.",
+                    text = stringResource(id = R.string.hydration_science_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = TextSecondary
                 )
@@ -200,7 +202,7 @@ fun HydrationScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "TODAY'S WATER LOGS",
+                text = stringResource(id = R.string.todays_water_logs),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.2.sp
@@ -212,12 +214,16 @@ fun HydrationScreen(
                 TextButton(onClick = onClearWater) {
                     Icon(
                         imageVector = Icons.Default.DeleteSweep,
-                        contentDescription = "Clear logs",
+                        contentDescription = stringResource(id = R.string.clear_today),
                         tint = MaterialTheme.colorScheme.error,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Clear Today", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.error)
+                    Text(
+                        text = stringResource(id = R.string.clear_today),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             }
         }
@@ -232,7 +238,7 @@ fun HydrationScreen(
                     .padding(vertical = 24.dp)
             ) {
                 Text(
-                    text = "No water logged today yet. Tap +250ml above!",
+                    text = stringResource(id = R.string.empty_water_log),
                     style = MaterialTheme.typography.bodySmall,
                     color = TextMuted
                 )

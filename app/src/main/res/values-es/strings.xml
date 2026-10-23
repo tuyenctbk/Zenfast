@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">ZenFast</string>
+
+    <!-- Navigation -->
     <string name="nav_timer">Temporizador</string>
+    <string name="nav_kitchen">Cocina</string>
     <string name="nav_stages">Etapas</string>
     <string name="nav_water">Agua</string>
     <string name="nav_history">Historial</string>
-    <string name="banner_cd">Banner de Ayuno Consciente</string>
+
+    <!-- General Actions -->
     <string name="start_fast">Iniciar Ayuno</string>
     <string name="end_fast">Terminar Ayuno</string>
     <string name="edit_start_time">Editar Hora de Inicio</string>
@@ -14,45 +18,145 @@
     <string name="fasting_status_active">Ayuno en Curso</string>
     <string name="fasting_status_ready">Listo para Ayunar</string>
     <string name="current_stage">Etapa Actual</string>
-    <string name="hydration_title">Consumo de Agua</string>
-    <string name="log_water">Registrar Agua</string>
-    <string name="daily_goal">Meta Diaria</string>
-    <string name="history_title">Historial de Ayunos</string>
-    <string name="empty_history">¡Aún no hay ayunos completados. Comienza tu viaje hoy!</string>
-    <string name="onboarding_title_1">Compañero de Ayuno Consciente</string>
-    <string name="onboarding_desc_1">Bienvenido a ZenFast. Inicia un estilo de vida de ayuno intermitente equilibrado.</string>
-    <string name="onboarding_title_2">Hidratación Consciente</string>
-    <string name="onboarding_desc_2">La hidratación es esencial al ayunar. Registra tu agua y mantén el equilibrio.</string>
-    <string name="onboarding_title_3">Información Biológica</string>
-    <string name="onboarding_desc_3">Comprende qué sucede en tu cuerpo durante cada hora de ayuno.</string>
-    <string name="get_started">Comenzar</string>
-    <string name="next">Siguiente</string>
-    <string name="skip">Omitir</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Guardar</string>
     <string name="delete">Eliminar</string>
     <string name="confirm">Confirmar</string>
+    <string name="next">Siguiente</string>
+    <string name="skip">Omitir</string>
+    <string name="get_started">Comenzar</string>
+    <string name="close">Cerrar</string>
+
+    <!-- Dashboard -->
+    <string name="banner_cd">Banner de Ayuno Consciente</string>
+    <string name="edit_start">Editar Inicio</string>
+    <string name="openkitchen_companion_title">OpenKitchen Rompe-Ayuno</string>
+    <string name="openkitchen_companion_fasting_desc">Escanea códigos de barras para picos de insulina o cocina recetas suaves.</string>
+    <string name="openkitchen_companion_ready_desc">Explora recetas altas en proteína y el escáner de ingredientes glucémicos.</string>
+    <string name="fasting_protocol_label">PROTOCOLO DE AYUNO</string>
+    <string name="hydration_companion">COMPAÑERO DE HIDRATACIÓN</string>
+
+    <!-- Hydration -->
+    <string name="hydration_title">Consumo de Agua</string>
+    <string name="log_water">Registrar Agua</string>
+    <string name="daily_goal">Meta Diaria</string>
+    <string name="add_water_250">+250ml</string>
+    <string name="add_water_500">+500ml</string>
+    <string name="custom_water">Personalizado ml</string>
+
+    <!-- Fasting History -->
+    <string name="history_title">Historial de Ayunos</string>
+    <string name="empty_history">¡Aún no hay ayunos completados. Comienza tu viaje hoy!</string>
     <string name="congratulations">¡Felicitaciones!</string>
     <string name="fast_completed_success">¡Has completado tu ayuno con éxito!</string>
-    <string name="share">Compartir</string>
-    <string name="rate_app">Calificar App</string>
-    <string name="theme">Tema</string>
-    <string name="light_theme">Claro</string>
-    <string name="dark_theme">Oscuro</string>
-    <string name="system_theme">Sistema</string>
-    <string name="emerald_theme">Esmeralda Zen</string>
-    <string name="sunset_theme">Atardecer</string>
-    <string name="ocean_theme">Brisa Marina</string>
-    <string name="lavender_theme">Lavanda</string>
-    <string name="select_theme">Seleccionar Tema</string>
+
+    <!-- End Fast Dialog -->
+    <string name="end_fast_dialog_title_completed">¡Ayuno Completado! 🎉</string>
+    <string name="end_fast_dialog_title_early">Terminar Ayuno Temprano</string>
+    <string name="how_was_energy">¿Cómo estuvo tu nivel de energía?</string>
+    <string name="energy_high">⚡ Alta</string>
+    <string name="energy_normal">😊 Normal</string>
+    <string name="energy_low">😴 Baja</string>
+    <string name="log_weight_label">Registrar Peso (opcional, kg)</string>
+    <string name="log_weight_hint">ej. 70.5</string>
+    <string name="notes_label">Notas y Sensaciones (opcional)</string>
+    <string name="notes_hint">ej. Me sentí genial durante la caminata</string>
+    <string name="save_and_cook_openkitchen">Guardar y Cocinar en OpenKitchen</string>
+    <string name="save_checkin_finish">Guardar Registro y Finalizar</string>
+    <string name="keep_fasting">Seguir Ayunando</string>
+
+    <!-- OpenKitchen Main -->
+    <string name="openkitchen_title">OpenKitchen</string>
+    <string name="tab_recipes">Recetas Rompe-Ayuno</string>
+    <string name="tab_scanner">Escáner Glucémico</string>
+    <string name="gentle_nutrition_title">Nutrición Suave para Romper el Ayuno</string>
+    <string name="gentle_nutrition_desc">Tras el ayuno, la sensibilidad a la insulina es elevada. Estas comidas seleccionadas aportan proteínas y nutrientes para el tracto digestivo sin causar bajones de azúcar.</string>
+    <string name="no_recipes_found">No se encontraron recetas. Intenta seleccionar otra categoría o revisa tu conexión a internet.</string>
+
+    <!-- Recipe Categories -->
+    <string name="cat_all">Todas las Recetas</string>
+    <string name="cat_high_protein">Alta en Proteína</string>
+    <string name="cat_gut_friendly">Caldos Digestivos</string>
+    <string name="cat_keto_gentle">Bajo en Carbos / Keto</string>
+    <string name="cat_light_starters">Entradas Suaves</string>
+
+    <!-- Recipe Cook Mode -->
+    <string name="cook_mode_title">Modo Cocina</string>
+    <string name="cook_mode_recipe_title">Modo Cocina: %1$s</string>
+    <string name="cook_mode_step_subtitle">Paso %1$d de %2$d • %3$s</string>
+    <string name="ingredients_checklist">Lista de Ingredientes (%1$d/%2$d listos)</string>
+    <string name="step_progress_header">PASO %1$d DE %2$d</string>
+    <string name="default_step_instruction">Continúa con el paso de la receta.</string>
+    <string name="recipe_duration">%1$d min</string>
+    <string name="recipe_protein">~%1$dg Proteína</string>
+    <string name="recipe_subtitle">%1$s • %2$s • %3$d ingredientes</string>
+    <string name="open_cook_mode_steps">Abrir Modo Cocina (%1$d pasos)</string>
+    <string name="start_cooking">Iniciar Modo Cocina</string>
+    <string name="exit_cook_mode">Salir de Modo Cocina</string>
+    <string name="view_ingredients">Ver Ingredientes</string>
+    <string name="step_timer">Temporizador de Paso</string>
+    <string name="step_timer_complete">¡Paso Completado! 🎉</string>
+    <string name="previous_step">Anterior</string>
+    <string name="next_step">Siguiente Paso</string>
+    <string name="finish_break_fast">¡Finalizar y Romper Ayuno!</string>
+    <string name="pause">Pausa</string>
+    <string name="resume">Iniciar</string>
+    <string name="reset_timer">Reiniciar Temporizador</string>
+
+    <!-- Glycemic & Barcode Scanner -->
+    <string name="scanner_card_title">Escáner de Ingredientes por Código de Barras</string>
+    <string name="scanner_card_desc">Desarrollado con OpenFoodFacts. Detecta maltodextrina, jarabe de maíz de alta fructosa y azúcares añadidos antes de romper el ayuno.</string>
+    <string name="barcode_input_placeholder">Ingresa el código de barras...</string>
+    <string name="clear_input">Borrar</string>
+    <string name="analyze">Analizar</string>
+    <string name="open_camera_viewfinder">Abrir Visor de Cámara</string>
+    <string name="hide_camera_viewfinder">Ocultar Visor de Cámara</string>
+    <string name="align_barcode_viewport">Alinea el código dentro del visor</string>
+    <string name="break_fast_suitability">APTITUD PARA ROMPER AYUNO</string>
+    <string name="spike_ingredients_detected">Ingredientes con Pico Detectados:</string>
+    <string name="nutrition_per_100g">Nutrición por 100g</string>
+    <string name="macro_sugar">Azúcar</string>
+    <string name="macro_carbs">Carbos</string>
+    <string name="macro_protein">Proteína</string>
+    <string name="macro_fiber">Fibra</string>
+    <string name="explore_break_fast_recipes">Explorar Recetas en OpenKitchen</string>
+    <string name="recent_scans_title">Escaneos Recientes</string>
+    <string name="empty_barcode_error">Por favor ingresa o escanea un código de barras.</string>
+
+    <!-- Fasting Presets -->
     <string name="preset_16_8">16:8 Intermitente</string>
     <string name="preset_18_6">18:6 Ayuno</string>
     <string name="preset_20_4">20:4 Guerrero</string>
     <string name="preset_omad">OMAD (23:1)</string>
     <string name="preset_custom">Personalizado</string>
-    <string name="fasting_protocol_label">PROTOCOLO DE AYUNO</string>
-    <string name="hydration_companion">COMPAÑERO DE HIDRATACIÓN</string>
-    <string name="add_water_250">+250ml</string>
-    <string name="add_water_500">+500ml</string>
-    <string name="custom_water">Personalizado ml</string>
+
+    <!-- Themes & Dialogs -->
+    <string name="theme">Tema</string>
+    <string name="light_theme">Claro</string>
+    <string name="dark_theme">Oscuro</string>
+    <string name="system_theme">Sistema</string>
+    <string name="emerald_theme">Esmeralda Zen</string>
+    <string name="sunset_theme">Atardecer Cálido</string>
+    <string name="ocean_theme">Brisa Marina</string>
+    <string name="lavender_theme">Lavanda Calma</string>
+    <string name="select_theme">Seleccionar Tema de Color</string>
+    <string name="share">Compartir</string>
+    <string name="rate_app">Calificar App</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">Compañero de Ayuno Consciente</string>
+    <string name="onboarding_desc_1">Bienvenido a ZenFast. Inicia un estilo de vida de ayuno intermitente equilibrado en armonía con tus ritmos naturales.</string>
+    <string name="onboarding_title_2">Hidratación Consciente</string>
+    <string name="onboarding_desc_2">La hidratación es esencial, especialmente al ayunar. Registra tu agua y mantén el equilibrio de fluidos celulares.</string>
+    <string name="onboarding_title_3">Información Biológica</string>
+    <string name="onboarding_desc_3">Comprende exactamente qué sucede en tus células, hígado y metabolismo quemagrasas durante cada hora de ayuno.</string>
+    <string name="bullet_1_1">Protocolos de ayuno científicos (16:8, 20:4, etc.)</string>
+    <string name="bullet_1_2">Privacidad absoluta local y offline</string>
+    <string name="bullet_1_3">Transiciones suaves con guías visuales ambientales</string>
+    <string name="bullet_2_1">Metas personalizadas de agua</string>
+    <string name="bullet_2_2">Preajustes de registro con un toque</string>
+    <string name="bullet_2_3">Seguimiento de electrolitos con base científica</string>
+    <string name="bullet_3_1">Estabilización de insulina y descenso de glucosa</string>
+    <string name="bullet_3_2">Guías de quema de grasa y flexibilidad metabólica</string>
+    <string name="bullet_3_3">Autofagia y regeneración celular</string>
 </resources>

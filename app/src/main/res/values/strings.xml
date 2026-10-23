@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">ZenFast</string>
+
+    <!-- Navigation -->
     <string name="nav_timer">Timer</string>
+    <string name="nav_kitchen">Kitchen</string>
     <string name="nav_stages">Stages</string>
     <string name="nav_water">Water</string>
     <string name="nav_history">History</string>
-    <string name="banner_cd">Mindful Fasting Banner</string>
+
+    <!-- General Actions -->
     <string name="start_fast">Start Fast</string>
     <string name="end_fast">End Fast</string>
     <string name="edit_start_time">Edit Start Time</string>
@@ -14,11 +18,146 @@
     <string name="fasting_status_active">Fasting in Progress</string>
     <string name="fasting_status_ready">Ready to Fast</string>
     <string name="current_stage">Current Stage</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="confirm">Confirm</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="get_started">Get Started</string>
+    <string name="close">Close</string>
+
+    <!-- Dashboard -->
+    <string name="banner_cd">Mindful Fasting Banner</string>
+    <string name="edit_start">Edit Start</string>
+    <string name="start_fast_formatted">Start %1$d:%2$02d Fast</string>
+    <string name="openkitchen_companion_title">OpenKitchen Break-Fast</string>
+    <string name="openkitchen_companion_fasting_desc">Scan food barcodes for insulin spikes or cook gentle recipes.</string>
+    <string name="openkitchen_companion_ready_desc">Explore high-protein recipes &amp; glycemic ingredient scanner.</string>
+    <string name="fasting_protocol_label">FASTING PROTOCOL</string>
+    <string name="hydration_companion">HYDRATION COMPANION</string>
+
+    <!-- Hydration -->
     <string name="hydration_title">Water Intake</string>
     <string name="log_water">Log Water</string>
     <string name="daily_goal">Daily Goal</string>
+    <string name="daily_goal_progress">Daily Goal: %1$d ml (%2$d%%)</string>
+    <string name="add_water_250">+250ml</string>
+    <string name="add_water_500">+500ml</string>
+    <string name="add_water_750">+750ml</string>
+    <string name="custom_water">Custom ml</string>
+    <string name="hydration_science_title">💡 Fasting &amp; Electrolytes Science</string>
+    <string name="hydration_science_desc">When fasting, insulin levels drop, causing your kidneys to excrete excess water and sodium. Staying hydrated prevents headaches, fatigue, and hunger pangs. Tip: Add a pinch of unrefined sea salt to water during extended fasts.</string>
+    <string name="todays_water_logs">TODAY\'S WATER LOGS</string>
+    <string name="clear_today">Clear Today</string>
+    <string name="empty_water_log">No water logged today yet. Tap +250ml above!</string>
+
+    <!-- Fasting History -->
     <string name="history_title">Fasting History</string>
+    <string name="history_perf_header">FASTING PERFORMANCE &amp; INSIGHTS</string>
+    <string name="history_log_header">FASTING LOG HISTORY</string>
+    <string name="completed_fasts_label">Completed Fasts</string>
+    <string name="total_fasted_label">Total Fasted</string>
+    <string name="avg_duration_label">Avg Duration</string>
+    <string name="hours_fasted_format">%1$.1f Hours Fasted</string>
     <string name="empty_history">No completed fasts yet. Start your fasting journey today!</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="fast_completed_success">You have successfully completed your fast!</string>
+
+    <!-- End Fast Dialog -->
+    <string name="end_fast_dialog_title_completed">Fast Completed! 🎉</string>
+    <string name="end_fast_dialog_title_early">End Fast Early</string>
+    <string name="how_was_energy">How was your energy level?</string>
+    <string name="energy_high">⚡ High</string>
+    <string name="energy_normal">😊 Normal</string>
+    <string name="energy_low">😴 Low</string>
+    <string name="log_weight_label">Log Weight (optional, kg)</string>
+    <string name="log_weight_hint">e.g. 70.5</string>
+    <string name="notes_label">Notes &amp; Feelings (optional)</string>
+    <string name="notes_hint">e.g. Felt great during morning walk</string>
+    <string name="save_and_cook_openkitchen">Save &amp; Cook in OpenKitchen</string>
+    <string name="save_checkin_finish">Save Check-in &amp; Finish</string>
+    <string name="keep_fasting">Keep Fasting</string>
+
+    <!-- OpenKitchen Main -->
+    <string name="openkitchen_title">OpenKitchen</string>
+    <string name="tab_recipes">Break-Fast Recipes</string>
+    <string name="tab_scanner">Glycemic Scanner</string>
+    <string name="gentle_nutrition_title">Gentle Break-Fast Nutrition</string>
+    <string name="gentle_nutrition_desc">Post-fast, insulin sensitivity is heightened. These curated meals provide high-protein &amp; gut-healing nutrients without crashing blood sugar.</string>
+    <string name="no_recipes_found">No recipes found. Try selecting another category or check your internet connection.</string>
+
+    <!-- Recipe Categories -->
+    <string name="cat_all">All Break-Fast</string>
+    <string name="cat_high_protein">High Protein</string>
+    <string name="cat_gut_friendly">Gut-Friendly Broths</string>
+    <string name="cat_keto_gentle">Low Carb / Keto</string>
+    <string name="cat_light_starters">Gentle Starters</string>
+
+    <!-- Recipe Cook Mode -->
+    <string name="cook_mode_title">Recipe Cook Mode</string>
+    <string name="cook_mode_recipe_title">Cook Mode: %1$s</string>
+    <string name="cook_mode_step_subtitle">Step %1$d of %2$d • %3$s</string>
+    <string name="ingredients_checklist">Ingredients Checklist (%1$d/%2$d prepped)</string>
+    <string name="step_progress_header">STEP %1$d OF %2$d</string>
+    <string name="default_step_instruction">Proceed with recipe step.</string>
+    <string name="recipe_duration">%1$d min</string>
+    <string name="recipe_protein">~%1$dg Protein</string>
+    <string name="recipe_subtitle">%1$s • %2$s • %3$d ingredients</string>
+    <string name="open_cook_mode_steps">Open Cook Mode (%1$d steps)</string>
+    <string name="start_cooking">Start Cook Mode</string>
+    <string name="exit_cook_mode">Exit Cook Mode</string>
+    <string name="view_ingredients">View Ingredients</string>
+    <string name="step_timer">Step Timer</string>
+    <string name="step_timer_complete">Step Time Complete! 🎉</string>
+    <string name="previous_step">Previous</string>
+    <string name="next_step">Next Step</string>
+    <string name="finish_break_fast">Finish &amp; Break Fast!</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Start</string>
+    <string name="reset_timer">Reset Timer</string>
+
+    <!-- Glycemic & Barcode Scanner -->
+    <string name="scanner_card_title">Food Barcode Ingredient Scanner</string>
+    <string name="scanner_card_desc">Powered by OpenFoodFacts. Detects Maltodextrin, high-fructose corn syrup, and added sugars before breaking your fast.</string>
+    <string name="barcode_input_placeholder">Enter barcode number...</string>
+    <string name="clear_input">Clear</string>
+    <string name="analyze">Analyze</string>
+    <string name="open_camera_viewfinder">Open Camera Viewfinder</string>
+    <string name="hide_camera_viewfinder">Hide Camera Viewfinder</string>
+    <string name="align_barcode_viewport">Align barcode within viewport</string>
+    <string name="break_fast_suitability">BREAK-FAST SUITABILITY</string>
+    <string name="spike_ingredients_detected">Spike Ingredients Detected:</string>
+    <string name="nutrition_per_100g">Nutrition per 100g</string>
+    <string name="macro_sugar">Sugar</string>
+    <string name="macro_carbs">Carbs</string>
+    <string name="macro_protein">Protein</string>
+    <string name="macro_fiber">Fiber</string>
+    <string name="explore_break_fast_recipes">Explore OpenKitchen Break-Fast Recipes</string>
+    <string name="recent_scans_title">Recent Scans</string>
+    <string name="empty_barcode_error">Please enter or scan a barcode number.</string>
+
+    <!-- Fasting Presets -->
+    <string name="preset_16_8">16:8 Intermittent</string>
+    <string name="preset_18_6">18:6 Fast</string>
+    <string name="preset_20_4">20:4 Warrior</string>
+    <string name="preset_omad">OMAD (23:1)</string>
+    <string name="preset_custom">Custom</string>
+
+    <!-- Themes & Dialogs -->
+    <string name="theme">Theme</string>
+    <string name="light_theme">Light</string>
+    <string name="dark_theme">Dark</string>
+    <string name="system_theme">System</string>
+    <string name="emerald_theme">Emerald Zen</string>
+    <string name="sunset_theme">Sunset Glow</string>
+    <string name="ocean_theme">Ocean Breeze</string>
+    <string name="lavender_theme">Lavender Calm</string>
+    <string name="select_theme">Select Color Theme</string>
+    <string name="share">Share</string>
+    <string name="rate_app">Rate App</string>
+
+    <!-- Onboarding -->
     <string name="onboarding_title_1">Mindful Fasting Companion</string>
     <string name="onboarding_desc_1">Welcome to ZenFast. Embark on a balanced intermittent fasting lifestyle aligned with your body\'s natural rhythms.</string>
     <string name="onboarding_title_2">Mindful Hydration</string>
@@ -34,34 +173,4 @@
     <string name="bullet_3_1">Insulin stabilization and sugar drop stages</string>
     <string name="bullet_3_2">Fat-burning and metabolic switching guides</string>
     <string name="bullet_3_3">Autophagy and cellular rejuvenation tracking</string>
-    <string name="get_started">Get Started</string>
-    <string name="next">Next</string>
-    <string name="skip">Skip</string>
-    <string name="cancel">Cancel</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="confirm">Confirm</string>
-    <string name="congratulations">Congratulations!</string>
-    <string name="fast_completed_success">You have successfully completed your fast!</string>
-    <string name="share">Share</string>
-    <string name="rate_app">Rate App</string>
-    <string name="theme">Theme</string>
-    <string name="light_theme">Light</string>
-    <string name="dark_theme">Dark</string>
-    <string name="system_theme">System</string>
-    <string name="emerald_theme">Emerald Zen</string>
-    <string name="sunset_theme">Sunset Glow</string>
-    <string name="ocean_theme">Ocean Breeze</string>
-    <string name="lavender_theme">Lavender Calm</string>
-    <string name="select_theme">Select Color Theme</string>
-    <string name="preset_16_8">16:8 Intermittent</string>
-    <string name="preset_18_6">18:6 Fast</string>
-    <string name="preset_20_4">20:4 Warrior</string>
-    <string name="preset_omad">OMAD (23:1)</string>
-    <string name="preset_custom">Custom</string>
-    <string name="fasting_protocol_label">FASTING PROTOCOL</string>
-    <string name="hydration_companion">HYDRATION COMPANION</string>
-    <string name="add_water_250">+250ml</string>
-    <string name="add_water_500">+500ml</string>
-    <string name="custom_water">Custom ml</string>
 </resources>
