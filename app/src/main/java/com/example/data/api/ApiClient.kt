@@ -19,7 +19,7 @@ object ApiClient {
     private val openFoodFactsClient: OkHttpClient by lazy {
         val userAgentInterceptor = Interceptor { chain ->
             val request = chain.request().newBuilder()
-                .header("User-Agent", "ZenFast-OpenKitchen-Android/1.3 (contact@zenfast.org)")
+                .header("User-Agent", "ZenFast-OpenKitchen-Android/1.4 (contact@zenfast.org)")
                 .header("Accept", "application/json")
                 .build()
             chain.proceed(request)
